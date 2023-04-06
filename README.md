@@ -29,7 +29,7 @@
 </div>
 
 Автотесты написаны на <code>Java</code> с использованием <code>JUnit 5</code> и <code>Gradle</code>.
-Для UI-тестов использована библиотека [REST Assured](https://rest-assured.io/).
+Для тестирования использована библиотека [REST Assured](https://rest-assured.io/).
 Запуск тестов можно осуществлять локально или с помощью с помощью Jenkins/Allure TestOps.
 Также реализована сборка в <code>Jenkins</code> с формированием Allure-отчета и отправкой уведомления с результатами
 в <code>Telegram</code> после завершения прогона.
