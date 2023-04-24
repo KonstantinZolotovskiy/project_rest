@@ -2,12 +2,8 @@ package tests;
 
 import com.github.javafaker.Faker;
 import models.requests.CreateUserRequestDto;
-import models.requests.LoginUserRequestDto;
-import models.requests.RegistrationUserRequestDto;
 import models.requests.UpdateUserRequestDto;
 import models.responses.CreateUserResponseDto;
-import models.responses.LoginUserUnsuccessfulResponseDto;
-import models.responses.RegistrationUserUnsuccessfulResponseDto;
 import models.responses.UpdateUserResponseDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,18 +15,16 @@ import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.requestSpec;
 import static specs.BaseSpec.responseSpec;
 
-public class ReqresTests {
+public class UserTests {
 
     Faker faker = new Faker();
 
-    String name, job, email, password;
+    String name, job;
 
     @BeforeEach
-    public void init() {
+    public void initTestData() {
         name = faker.name().firstName();
         job = faker.job().position();
-        email = faker.internet().emailAddress();
-        password = faker.internet().password();
     }
 
     @Test
@@ -87,43 +81,5 @@ public class ReqresTests {
                         .delete("/users/2")
                         .then()
                         .statusCode(204));
-    }
-
-    @Test
-    @DisplayName("Авторизация без указания пароля")
-    void negativeLoginTest() {
-        LoginUserRequestDto loginUserBody = new LoginUserRequestDto();
-        loginUserBody.setEmail(email);
-
-        LoginUserUnsuccessfulResponseDto response = step("Авторизация без указания пароля", () ->
-                given(requestSpec)
-                        .body(loginUserBody)
-                        .post("/login")
-                        .then()
-                        .spec(responseSpec)
-                        .statusCode(400)
-                        .extract().as(LoginUserUnsuccessfulResponseDto.class));
-
-        step("Проверка текста сообщения о ошибке", () ->
-                Assertions.assertThat(response.getError()).isEqualTo("Missing password"));
-    }
-
-    @Test
-    @DisplayName("Регистрация без указания e-mail")
-    void negativeRegistrationTest() {
-        RegistrationUserRequestDto registrationUserBody = new RegistrationUserRequestDto();
-        registrationUserBody.setPassword(password);
-
-        RegistrationUserUnsuccessfulResponseDto response = step("Регистрация без указания e-mail", () ->
-                given(requestSpec)
-                        .body(registrationUserBody)
-                        .post("/register")
-                        .then()
-                        .spec(responseSpec)
-                        .statusCode(400)
-                        .extract().as(RegistrationUserUnsuccessfulResponseDto.class));
-
-        step("Проверка текста сообщения о ошибке", () ->
-                Assertions.assertThat(response.getError()).isEqualTo("Missing email or username"));
     }
 }
