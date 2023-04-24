@@ -1,6 +1,7 @@
 package tests;
 
 import com.github.javafaker.Faker;
+import io.qameta.allure.Owner;
 import models.requests.CreateUserRequestDto;
 import models.requests.UpdateUserRequestDto;
 import models.responses.CreateUserResponseDto;
@@ -15,6 +16,7 @@ import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.requestSpec;
 import static specs.BaseSpec.responseSpec;
 
+@Owner("K.Zolotovskiy")
 public class UserTests {
 
     Faker faker = new Faker();

@@ -1,6 +1,7 @@
 package tests;
 
 import com.github.javafaker.Faker;
+import io.qameta.allure.Owner;
 import models.requests.RegistrationUserRequestDto;
 import models.responses.RegistrationUserUnsuccessfulResponseDto;
 import org.assertj.core.api.Assertions;
@@ -13,6 +14,7 @@ import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.requestSpec;
 import static specs.BaseSpec.responseSpec;
 
+@Owner("K.Zolotovskiy")
 public class RegistrationTests {
 
     Faker faker = new Faker();
