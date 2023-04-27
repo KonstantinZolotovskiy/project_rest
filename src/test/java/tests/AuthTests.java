@@ -1,11 +1,9 @@
 package tests;
 
-import com.github.javafaker.Faker;
 import io.qameta.allure.Owner;
-import models.requests.LoginUserRequestDto;
-import models.responses.LoginUserUnsuccessfulResponseDto;
+import models.requests.AuthRequestDto;
+import models.responses.AuthResponseDto;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,33 +15,47 @@ import static specs.BaseSpec.responseSpec;
 @Owner("K.Zolotovskiy")
 public class AuthTests {
 
-    Faker faker = new Faker();
-
-    String email;
-
-    @BeforeEach
-    public void initTestData() {
-        email = faker.internet().emailAddress();
-    }
+    String email = "eve.holt@reqres.in";
+    String password = "cityslicka";
 
     @Test
     @DisplayName("Авторизация без указания пароля")
-    void AuthWithoutPasswordTest() {
-        LoginUserRequestDto loginUserBody = new LoginUserRequestDto();
+    void authWithoutPasswordTest() {
+        AuthRequestDto loginUserBody = new AuthRequestDto();
         loginUserBody.setEmail(email);
 
         String errorMessage = "Missing password";
 
-        LoginUserUnsuccessfulResponseDto response = step("Авторизация без указания пароля", () ->
+        AuthResponseDto response = step("Авторизация без указания пароля", () ->
                 given(requestSpec)
                         .body(loginUserBody)
                         .post("/login")
                         .then()
                         .spec(responseSpec)
                         .statusCode(400)
-                        .extract().as(LoginUserUnsuccessfulResponseDto.class));
+                        .extract().as(AuthResponseDto.class));
 
         step("Проверка текста сообщения о ошибке", () ->
                 Assertions.assertThat(response.getError()).isEqualTo(errorMessage));
+    }
+
+    @Test
+    @DisplayName("Успещная авторизация")
+    void successfulAuthTest() {
+        AuthRequestDto loginUserBody = new AuthRequestDto();
+        loginUserBody.setEmail(email);
+        loginUserBody.setPassword(password);
+
+        AuthResponseDto response = step("Успешная авторизация", () ->
+                given(requestSpec)
+                        .body(loginUserBody)
+                        .post("/login")
+                        .then()
+                        .spec(responseSpec)
+                        .statusCode(200)
+                        .extract().as(AuthResponseDto.class));
+
+        step("Проверка, что token не равен null", () ->
+                Assertions.assertThat(response.getToken()).isNotNull());
     }
 }

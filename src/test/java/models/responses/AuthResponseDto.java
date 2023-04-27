@@ -3,6 +3,7 @@ package models.responses;
 import lombok.Data;
 
 @Data
-public class RegistrationUserUnsuccessfulResponseDto {
+public class AuthResponseDto {
     String error;
+    String token;
 }

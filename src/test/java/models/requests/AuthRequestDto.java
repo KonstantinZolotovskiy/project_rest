@@ -3,6 +3,6 @@ package models.requests;
 import lombok.Data;
 
 @Data
-public class LoginUserRequestDto {
+public class AuthRequestDto {
     String email, password;
 }

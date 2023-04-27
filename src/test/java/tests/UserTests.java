@@ -7,7 +7,6 @@ import models.requests.UpdateUserRequestDto;
 import models.responses.CreateUserResponseDto;
 import models.responses.UpdateUserResponseDto;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,13 +20,9 @@ public class UserTests {
 
     Faker faker = new Faker();
 
-    String name, job;
+    String name = faker.name().firstName(),
+            job = faker.job().position();
 
-    @BeforeEach
-    public void initTestData() {
-        name = faker.name().firstName();
-        job = faker.job().position();
-    }
 
     @Test
     @DisplayName("Создание юзера")
